@@ -7,15 +7,17 @@ public class WeatherConditionsEntry {
 	private int humidity;
 	private double min_temperature;
 	private double max_temperature;
+	private int cityId;
 
 	public WeatherConditionsEntry(int recordedTime, double temperature, int pressure, int humidity,
-			double min_temperature, double max_temperature) {
+			double min_temperature, double max_temperature, int cityId) {
 		this.recordedTime = recordedTime;
 		this.temperature = temperature;
 		this.pressure = pressure;
 		this.humidity = humidity;
 		this.min_temperature = min_temperature;
 		this.max_temperature = max_temperature;
+		this.cityId = cityId;
 	}
 
 	public int getRecordedTime() {
@@ -54,6 +56,10 @@ public class WeatherConditionsEntry {
 	public void setMax_temperature(double max_temperature) {
 		this.max_temperature = max_temperature;
 	}
-
-
+	public int getCityId() {
+		return cityId;
+	}
+	public void setCityId(int cityId) {
+		this.cityId = cityId;
+	}
 }
