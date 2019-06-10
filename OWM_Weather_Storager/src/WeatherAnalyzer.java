@@ -1,14 +1,9 @@
-import java.io.FileReader;
-import java.io.IOException;
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import dao.DBHandler;
 import dao.LocationEntry;
 import dao.WeatherConditionsEntry;
+import plotting.HeatMapPainter;
 
 /**
  * The WeatherAnalyzer serves as the entry point of the application. Here you have to set your API_KEY first.
@@ -21,26 +16,31 @@ import dao.WeatherConditionsEntry;
  * 'weatherconditions': Contains the weather information like temperature, pressure, humidity ...
  * 
  * @author Marcel Verst
- * @version 09.06.2019
+ * @version 10.06.2019
  */
 public class WeatherAnalyzer {
 	private static String API_KEY = "ca48cf91812f0d29c506b6e2f730a3ed";
 
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
-		JSONParser parser = new JSONParser();
-		try(FileReader reader = new FileReader("json_files\\city.list.json")) {
-			try {
-				Object obj = parser.parse(reader);
-				JSONArray array = (JSONArray) obj;
-				array.forEach(entry -> parseEntry((JSONObject) entry));
+		//		System.out.println("Your first argument is: "+args[0]);  
+		HeatMapPainter demo = new HeatMapPainter();
+        demo.pack();
+        demo.setVisible(true);
 
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		//		JSONParser parser = new JSONParser();
+		//		try(FileReader reader = new FileReader("json_files\\city.list.json")) {
+		//			try {
+		//				Object obj = parser.parse(reader);
+		//				JSONArray array = (JSONArray) obj;
+		//				array.forEach(entry -> parseEntry((JSONObject) entry));
+		//
+		//			} catch (ParseException e) {
+		//				e.printStackTrace();
+		//			}
+		//		} catch (IOException e) {
+		//			e.printStackTrace();
+		//		}
 	}
 
 	/**
