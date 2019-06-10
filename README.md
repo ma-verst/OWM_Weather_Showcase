@@ -48,6 +48,7 @@ Finally to correspond a temperature to an appropriate color for the map, a conve
 ### Todos
 - Currently random points are used for the heatmap
 - Extract data from DB and use it for XYZDataset
+- Check license
 
 License
 ----
