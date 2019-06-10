@@ -4,6 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * The DBHandler serves as a helper between the user and the database. CRUD operations are provided for both 'location' and 
+ * 'weatherconditions' table.
+ * 
+ * @author Marcel Verst
+ * @version 10.06.2019
+ */
 public class DBHandler {
 	SqlConnector connectionHandler = new SqlConnector();
 
@@ -171,7 +178,12 @@ public class DBHandler {
 		}
 		connectionHandler.disconnect();
 	}
-
+	
+	/**
+	 * Returns a ResultSet containing all entries of the 'weatherconditions' table.
+	 * 
+	 * @return ResultSet
+	 */
 	public ResultSet getAllWCEntries() {
 		ResultSet result = null;
 
@@ -187,8 +199,14 @@ public class DBHandler {
 
 		return result;
 	}
-
-	private boolean entryExists(int id) {
+	
+	/**
+	 * Returns true if an entry based on the given id already exists in the 'location' table.
+	 * 
+	 * @param Integer The id you want to check
+	 * @return Boolean
+	 */
+	public boolean entryExists(int id) {
 		connectionHandler.connect();
 		try {
 			Statement stmt = connectionHandler.getConnection().createStatement();

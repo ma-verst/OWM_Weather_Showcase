@@ -1,5 +1,11 @@
 package dao;
 
+/**
+ * Container class representing a row of the 'weatherconditions' table.
+ * 
+ * @author Marcel Verst
+ * @version 10.06.2019
+ */
 public class WeatherConditionsEntry {
 	private int recordedTime;
 	private double temperature;

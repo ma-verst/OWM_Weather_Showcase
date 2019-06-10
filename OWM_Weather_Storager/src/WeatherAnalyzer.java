@@ -19,11 +19,9 @@ import plotting.HeatMapPainter;
  * @version 10.06.2019
  */
 public class WeatherAnalyzer {
-	private static String API_KEY = "ca48cf91812f0d29c506b6e2f730a3ed";
+	private static String API_KEY = "";
 
-	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
-		//		System.out.println("Your first argument is: "+args[0]);  
 		HeatMapPainter demo = new HeatMapPainter();
         demo.pack();
         demo.setVisible(true);
@@ -44,7 +42,8 @@ public class WeatherAnalyzer {
 	}
 
 	/**
-	 * Parses the current entry for cities within DE and stores the current cities weather information into the database.
+	 * Checks if the current JSON entry contains a city which lies in Germany using the country code 'DE'
+	 * Cities in 'DE' are then crawled for retrieving location and weather data.
 	 * 
 	 * @param JSONObject The entry to check
 	 */
@@ -53,32 +52,43 @@ public class WeatherAnalyzer {
 		String country = entry.get("country").toString();
 
 		if(country.equals("DE")) {
-			WeatherExtractor ex = new WeatherExtractor();
-			DBHandler dbHandler = new DBHandler();
+			storeEntry(city, country);
+		}
+	}
+	
+	/**
+	 * Uses {@link WeatherExtractor} to retrieve location and weather information of a specific city within a specific country.
+	 * Afterwards the {@link DBHandler} is used to store the retrieved information within the MySQL database.
+	 * 
+	 * @param String The city
+	 * @param String The country
+	 */
+	public static void storeEntry(String city, String country) {
+		WeatherExtractor ex = new WeatherExtractor();
+		DBHandler dbHandler = new DBHandler();
 
-			/*Retrieve Weather locally----------------------------------------*/
-			ex.setCredentials(API_KEY, city, country);
-			if(ex.setCurrentWeather()) {
+		/*Retrieve Weather locally----------------------------------------*/
+		ex.setCredentials(API_KEY, city, country);
+		if(ex.setCurrentWeather()) {
 
-				/*Create Location Entry-------------------------------------------*/
-				LocationEntry lEntry = new LocationEntry(
-						ex.getCityId(), 
-						ex.getLon(), 
-						ex.getLat(), 
-						ex.getCityName());
-				dbHandler.insertL(lEntry);
+			/*Create Location Entry-------------------------------------------*/
+			LocationEntry lEntry = new LocationEntry(
+					ex.getCityId(), 
+					ex.getLon(), 
+					ex.getLat(), 
+					ex.getCityName());
+			dbHandler.insertL(lEntry);
 
-				/*Create WeatherConditions Entry----------------------------------*/
-				WeatherConditionsEntry wcEntry = new WeatherConditionsEntry(
-						ex.getRecordedTime(), 
-						ex.getTemperature(), 
-						ex.getPressure(), 
-						ex.getHumidity(), 
-						ex.getMin_temperature(), 
-						ex.getMax_temperature(),
-						ex.getCityId());
-				dbHandler.insertWC(wcEntry);
-			}
+			/*Create WeatherConditions Entry----------------------------------*/
+			WeatherConditionsEntry wcEntry = new WeatherConditionsEntry(
+					ex.getRecordedTime(), 
+					ex.getTemperature(), 
+					ex.getPressure(), 
+					ex.getHumidity(), 
+					ex.getMin_temperature(), 
+					ex.getMax_temperature(),
+					ex.getCityId());
+			dbHandler.insertWC(wcEntry);
 		}
 	}
 }

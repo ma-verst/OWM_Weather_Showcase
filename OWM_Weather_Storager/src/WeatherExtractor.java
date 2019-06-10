@@ -14,13 +14,13 @@ import org.json.JSONObject;
  * Several fields containing weather information is stored locally for further processing like storing in a database.
  * 
  * @author Marcel Verst
- * @version 09.06.2019
+ * @version 10.06.2019
  */
 public class WeatherExtractor {
 	// Credentials
-	private String API_KEY = "ca48cf91812f0d29c506b6e2f730a3ed";
-	private String yourCity = "Darmstadt";
-	private String yourCountryCode = "de";
+	private String API_KEY = "";
+	private String yourCity = "";
+	private String yourCountryCode = "";
 
 	// Fields for the 'location' table
 	private int cityId;

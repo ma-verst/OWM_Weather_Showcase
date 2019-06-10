@@ -58,7 +58,12 @@ public class SqlConnector {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Returns the current connection to the database. Used by the {@link DBHandler}.
+	 * 
+	 * @return Connection
+	 */
 	public Connection getConnection() {
 		return conn;
 	}

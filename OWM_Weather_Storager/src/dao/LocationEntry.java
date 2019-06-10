@@ -1,5 +1,11 @@
 package dao;
 
+/**
+ * Container class representing a row of the 'location' table.
+ * 
+ * @author Marcel Verst
+ * @version 10.06.2019
+ */
 public class LocationEntry {
 	private int cityID;
 	private double lon;
@@ -37,6 +43,4 @@ public class LocationEntry {
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
 	}
-
-
 }
