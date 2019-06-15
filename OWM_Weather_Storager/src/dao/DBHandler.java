@@ -221,4 +221,23 @@ public class DBHandler {
 		
 		return false;
 	}
+	
+	/**
+	 * Returns the ResultSet of a query to the database
+	 * 
+	 * @param String The query
+	 * @return ResultSet
+	 */
+	public ResultSet executeQuery(String query) {
+		ResultSet result = null;
+		
+		connectionHandler.connect();
+		try {
+			Statement stmt = connectionHandler.getConnection().createStatement();
+			result = stmt.executeQuery(query);
+		} catch(SQLException e) {
+		}
+		
+		return result;
+	}
 }

@@ -3,7 +3,7 @@ import org.json.simple.JSONObject;
 import dao.DBHandler;
 import dao.LocationEntry;
 import dao.WeatherConditionsEntry;
-import plotting.HeatMapPainter;
+import gui.TextFieldExample;
 
 /**
  * The WeatherAnalyzer serves as the entry point of the application. Here you have to set your API_KEY first.
@@ -22,9 +22,15 @@ public class WeatherAnalyzer {
 	private static String API_KEY = "";
 
 	public static void main(String[] args) {
-		HeatMapPainter demo = new HeatMapPainter();
-        demo.pack();
-        demo.setVisible(true);
+//		HeatMapPainter demo = new HeatMapPainter();
+//        demo.pack();
+//        demo.setVisible(true);
+		
+//		SwingGUIExample myGui = new SwingGUIExample();
+//		myGui.drawWindow();
+		
+		TextFieldExample example = new TextFieldExample();
+		example.doSomething();
 
 		//		JSONParser parser = new JSONParser();
 		//		try(FileReader reader = new FileReader("json_files\\city.list.json")) {
