@@ -3,7 +3,7 @@ import org.json.simple.JSONObject;
 import dao.DBHandler;
 import dao.LocationEntry;
 import dao.WeatherConditionsEntry;
-import gui.TextFieldExample;
+import plotting.HeatMapPainter;
 
 /**
  * The WeatherAnalyzer serves as the entry point of the application. Here you have to set your API_KEY first.
@@ -16,21 +16,21 @@ import gui.TextFieldExample;
  * 'weatherconditions': Contains the weather information like temperature, pressure, humidity ...
  * 
  * @author Marcel Verst
- * @version 10.06.2019
+ * @version 16.06.2019
  */
 public class WeatherAnalyzer {
-	private static String API_KEY = "";
+	private static String API_KEY = "ca48cf91812f0d29c506b6e2f730a3ed";
 
 	public static void main(String[] args) {
-//		HeatMapPainter demo = new HeatMapPainter();
-//        demo.pack();
-//        demo.setVisible(true);
-		
-//		SwingGUIExample myGui = new SwingGUIExample();
-//		myGui.drawWindow();
-		
-		TextFieldExample example = new TextFieldExample();
-		example.doSomething();
+		HeatMapPainter demo = new HeatMapPainter();
+		demo.pack();
+		demo.setVisible(true);
+
+		//		SwingGUIExample myGui = new SwingGUIExample();
+		//		myGui.drawWindow();
+
+		//		TextFieldExample example = new TextFieldExample();
+		//		example.doSomething();
 
 		//		JSONParser parser = new JSONParser();
 		//		try(FileReader reader = new FileReader("json_files\\city.list.json")) {
@@ -61,7 +61,7 @@ public class WeatherAnalyzer {
 			storeEntry(city, country);
 		}
 	}
-	
+
 	/**
 	 * Uses {@link WeatherExtractor} to retrieve location and weather information of a specific city within a specific country.
 	 * Afterwards the {@link DBHandler} is used to store the retrieved information within the MySQL database.
