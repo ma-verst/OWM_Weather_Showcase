@@ -3,6 +3,8 @@
 This application serves as a showcase of the OpenWeatherMap (OWM) API and also serves as a private training project.
 The idea of this project is to use the OWM API to get weather information about all locations available for Germany. Therefore OWM provides a list of all available locations which is used to send requests to the API.
 
+![Alt text](OWM_Weather_Storager/images/map.png?raw=true "Heatmap of Germany")
+
 ## Overview of Functionality
   - Retrieve weather information using OWM API
   - Store location and weather information in MySQL database
