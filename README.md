@@ -48,11 +48,10 @@ Finally to correspond a temperature to an appropriate color for the map, a conve
 - Dependencies should be downloaded automatically by Maven
 
 ### Todos
-- Currently random points are used for the heatmap
-- Extract data from DB and use it for XYZDataset
-- Check license
 - Create runnable project from command line
 - Read in OWM API key using command line instead of hard coding
+- Implement hibernate logic and files to replace jdbc management
+- Convert GPS coordinates to plain x- and y-coordinates
 
 License
 ----
