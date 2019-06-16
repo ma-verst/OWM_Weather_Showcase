@@ -19,7 +19,7 @@ import plotting.HeatMapPainter;
  * @version 16.06.2019
  */
 public class WeatherAnalyzer {
-	private static String API_KEY = "ca48cf91812f0d29c506b6e2f730a3ed";
+	private static String API_KEY = "";
 
 	public static void main(String[] args) {
 		HeatMapPainter demo = new HeatMapPainter();
