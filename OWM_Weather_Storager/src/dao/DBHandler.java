@@ -5,11 +5,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * The DBHandler serves as a helper between the user and the database. CRUD operations are provided for both 'location' and 
- * 'weatherconditions' table.
+ * Currently unused.
  * 
  * @author Marcel Verst
- * @version 10.06.2019
+ * @version 17.06.2019
  */
 public class DBHandler {
 	SqlConnector connectionHandler = new SqlConnector();
