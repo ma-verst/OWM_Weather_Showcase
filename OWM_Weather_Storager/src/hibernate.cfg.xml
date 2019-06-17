@@ -12,6 +12,7 @@
 		<property name="hibernate.connection.password">root</property>
 
 		<!-- List of XML mapping files -->
-		<mapping resource="dao/Employee.hbm.xml" />
+		<mapping resource="dao/LocationEntry.hbm.xml" />
+		<mapping resource="dao/WeatherConditionsEntry.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

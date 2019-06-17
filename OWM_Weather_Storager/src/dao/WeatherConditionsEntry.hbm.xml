@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="dao.WeatherConditionsEntry"
+		table="WEATHERCONDITIONS">
+
+		<meta attribute="class-description">
+			This class contains the weatherConditions detail.
+		</meta>
+
+		<id name="id" type="int" column="id">
+			<generator class="native" />
+		</id>
+
+		<property name="recordedTime" column="recordedTime"
+			type="int" />
+		<property name="temperature" column="temperature"
+			type="double" />
+		<property name="pressure" column="pressure" type="int" />
+		<property name="humidity" column="humidity" type="int" />
+		<property name="min_temperature" column="min_temperature"
+			type="double" />
+		<property name="max_temperature" column="max_temperature"
+			type="double" />
+		<property name="cityId" column="cityID" type="int" />
+
+	</class>
+</hibernate-mapping>
