@@ -1,17 +1,17 @@
-import java.util.Iterator;
-import java.util.List;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashSet;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import dao.DBHandler;
-import dao.Employee;
-import dao.LocationEntry;
+import dao.SessionHandler;
 import dao.WeatherConditionsEntry;
+import gui.SwingGUIExample;
+import plotting.HeatMapPainter;
 
 /**
  * The WeatherAnalyzer serves as the entry point of the application. Here you have to set your API_KEY first.
@@ -24,137 +24,56 @@ import dao.WeatherConditionsEntry;
  * 'weatherconditions': Contains the weather information like temperature, pressure, humidity ...
  * 
  * @author Marcel Verst
- * @version 16.06.2019
+ * @version 17.06.2019
  */
 public class WeatherAnalyzer {
 	private static String API_KEY = "";
-	private static SessionFactory factory;
+	private static final SessionHandler sessionHandler = new SessionHandler();
 
 	public static void main(String[] args) {
-		try {
-			factory = new Configuration().configure().buildSessionFactory();
-		} catch(Throwable ex) {
-			System.err.println("Failed to create sessionFactory object." + ex);
-			throw new ExceptionInInitializerError(ex);
-		}
-		addEmployee("Marcel", "Verst", 50000);
-		System.out.println("Added new Employee");
-		listEmployees();
-
-		//		HeatMapPainter demo = new HeatMapPainter();
-		//		demo.pack();
-		//		demo.setVisible(true);
-
-		//		SwingGUIExample myGui = new SwingGUIExample();
-		//		myGui.drawWindow();
-
-		//		TextFieldExample example = new TextFieldExample();
-		//		example.doSomething();
-
-		//		JSONParser parser = new JSONParser();
-		//		try(FileReader reader = new FileReader("json_files\\city.list.json")) {
-		//			try {
-		//				Object obj = parser.parse(reader);
-		//				JSONArray array = (JSONArray) obj;
-		//				array.forEach(entry -> parseEntry((JSONObject) entry));
-		//
-		//			} catch (ParseException e) {
-		//				e.printStackTrace();
-		//			}
-		//		} catch (IOException e) {
-		//			e.printStackTrace();
-		//		}
+		processWeatherData();
+		//		createHeatMap();
+		//		createGUIExample();
 	}
 
 	/**
-	 * Creates an Employee object with the given parameters and stores the object into the employee table
-	 * 
-	 * @param String The first name
-	 * @param String The last name
-	 * @param Integer The salary
+	 * Uses a parses to retrieve city names from a json file and queries the OpenWeatherMap (OWM) API for location and weather information
+	 * regaring this city. Finally stores the retrieved information in a database using hibernate.
 	 */
-	public static void addEmployee(String fname, String lname, int salary) {
-		Session session = factory.openSession();
-		Transaction tx = null;
-
-		try {
-			tx = session.beginTransaction();
-			Employee employee = new Employee(fname, lname, salary);
-			session.save(employee); 
-			tx.commit();
-		} catch (HibernateException e) {
-			if (tx!=null) tx.rollback();
-			e.printStackTrace(); 
-		} finally {
-			session.close(); 
-		}
-	}
-
-	/**
-	 * Prints all employee entries of the table.
-	 */
-	public static void listEmployees(){
-		Session session = factory.openSession();
-		Transaction tx = null;
-
-		try {
-			tx = session.beginTransaction();
-			List employees = session.createQuery("FROM Employee").list(); 
-			for (Iterator iterator = employees.iterator(); iterator.hasNext();){
-				Employee employee = (Employee) iterator.next(); 
-				System.out.print("First Name: " + employee.getFirstName()); 
-				System.out.print("  Last Name: " + employee.getLastName()); 
-				System.out.println("  Salary: " + employee.getSalary()); 
+	@SuppressWarnings("unchecked")
+	public static void processWeatherData() {
+		JSONParser parser = new JSONParser();
+		try(FileReader reader = new FileReader("json_files\\city.list.json")) {
+			try {
+				Object obj = parser.parse(reader);
+				JSONArray array = (JSONArray) obj;
+				array.forEach(entry -> parseEntry((JSONObject) entry));
+				
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
-			tx.commit();
-		} catch (HibernateException e) {
-			if (tx!=null) tx.rollback();
-			e.printStackTrace(); 
-		} finally {
-			session.close(); 
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Queries the database for location and weather information and creates a heatmap of all available entries.
+	 */
+	public static void createHeatMap() {
+		HeatMapPainter demo = new HeatMapPainter();
+		demo.pack();
+		demo.setVisible(true);
 	}
 
 	/**
-	 * Update the salary of an employee based on its ID.
-	 * 
-	 * @param Integer The ID of the employee
-	 * @param Integer The new salary
+	 * Creates a Swing GUI example frame.
 	 */
-	public void updateEmployee(Integer EmployeeID, int salary ){
-		Session session = factory.openSession();
-		Transaction tx = null;
-
-		try {
-			tx = session.beginTransaction();
-			Employee employee = (Employee)session.get(Employee.class, EmployeeID); 
-			employee.setSalary( salary );
-			session.update(employee); 
-			tx.commit();
-		} catch (HibernateException e) {
-			if (tx!=null) tx.rollback();
-			e.printStackTrace(); 
-		} finally {
-			session.close(); 
-		}
+	public static void createGUIExample() {
+		SwingGUIExample myGui = new SwingGUIExample();
+		myGui.drawWindow();
 	}
 
-	public void deleteEmployee(Integer EmployeeID){
-		Session session = factory.openSession();
-		Transaction tx = null;
-
-		try {
-			tx = session.beginTransaction();
-			Employee employee = (Employee)session.get(Employee.class, EmployeeID); 
-			session.delete(employee); 
-			tx.commit();
-		} catch (HibernateException e) {
-			if (tx!=null) tx.rollback();
-			e.printStackTrace(); 
-		} finally {
-			session.close(); 
-		}
-	}
 
 	/**
 	 * Checks if the current JSON entry contains a city which lies in Germany using the country code 'DE'
@@ -180,30 +99,21 @@ public class WeatherAnalyzer {
 	 */
 	public static void storeEntry(String city, String country) {
 		WeatherExtractor ex = new WeatherExtractor();
-		DBHandler dbHandler = new DBHandler();
 
 		/*Retrieve Weather locally----------------------------------------*/
 		ex.setCredentials(API_KEY, city, country);
 		if(ex.setCurrentWeather()) {
-
-			/*Create Location Entry-------------------------------------------*/
-			LocationEntry lEntry = new LocationEntry(
-					ex.getCityId(), 
-					ex.getLon(), 
-					ex.getLat(), 
-					ex.getCityName());
-			dbHandler.insertL(lEntry);
-
-			/*Create WeatherConditions Entry----------------------------------*/
-			WeatherConditionsEntry wcEntry = new WeatherConditionsEntry(
+			HashSet<WeatherConditionsEntry> set = new HashSet<>();
+			set.add(new WeatherConditionsEntry(
 					ex.getRecordedTime(), 
 					ex.getTemperature(), 
 					ex.getPressure(), 
 					ex.getHumidity(), 
 					ex.getMin_temperature(), 
 					ex.getMax_temperature(),
-					ex.getCityId());
-			dbHandler.insertWC(wcEntry);
+					ex.getCityId()));
+
+			sessionHandler.addLocation(ex.getCityId(), ex.getLon(), ex.getLat(), ex.getCityName(), set);
 		}
 	}
 }
